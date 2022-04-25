@@ -10,10 +10,14 @@ using namespace std;
 
 namespace coup {
     class Game {
-        private:
-            
+        protected:
+            vector<Player> players;
+
 
         public:
+            Game(){}
+            void add_player(Player &player);
+            void print_players();
             
     };
 }
