@@ -12,7 +12,24 @@ namespace coup {
 
     }
 
-    void coup::Player::revive(){
+    void Player::revive(){
         
+    }
+
+    void Player::income(){
+
+    }
+
+    void Player::foreign_aid(){
+
+    }
+
+    int Player::coins(){
+        int a = 5;
+        return a;
+    }
+
+    void Player::role(){
+
     }
 }

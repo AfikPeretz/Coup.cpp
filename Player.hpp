@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdlib.h>
 #include "Game.hpp"
+#include "Player.hpp"
 using namespace std;
 
 
@@ -12,7 +13,6 @@ using namespace std;
 namespace coup {
     class Player {
         protected:
-            int coins;
             string name;
             string role_name;
             bool isPlaying;
@@ -24,14 +24,13 @@ namespace coup {
         public:
             Player(Game game, string player_name) {} 
 
-            void income() {}
-            void foreign_aid() {}
+            void income();
+            void foreign_aid();
             void coup(Player &player);
             void die();
             void revive();
-            int coins() {}
-            void role() {}
-        
-            
+            int coins();
+            void role();
+
     };
 }

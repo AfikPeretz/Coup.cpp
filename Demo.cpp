@@ -11,12 +11,11 @@
 #include "Ambassador.hpp"
 #include "Captain.hpp"
 #include "Contessa.hpp"
-
-using namespace coup;
-
+#include "Game.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+using namespace coup;
 using namespace std;
 
 int main() {

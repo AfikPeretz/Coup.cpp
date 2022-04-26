@@ -5,16 +5,22 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#include "Player.hpp"
 using namespace std;
+using namespace coup;
 
 
 
 namespace coup {
-    class Captain {
+    class Captain: public Player {
         private:
             
 
         public:
-            
+            Captain(Game, string);
+            void income();
+            void foreign_aid();
+            void block(Player);
+            void steal(Player);
     };
 }

@@ -4,6 +4,10 @@
 
 namespace coup {
 
+    Game::Game() {
+
+    }
+
 
     void Game::add_player(Player &player){
 
@@ -12,6 +16,12 @@ namespace coup {
     void Game::print_players(){
         
     }
+
+    string Game::turn(){
+        return "dfs";
+        
+    }
+
 
     
 }
