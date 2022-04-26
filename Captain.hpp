@@ -17,10 +17,7 @@ namespace coup {
             
 
         public:
-            Captain(Game, string);
-            void income();
-            void foreign_aid();
-            void block(Player);
-            void steal(Player);
+            Captain(Game, string): Player(){}
+            void steal(Player){}
     };
 }

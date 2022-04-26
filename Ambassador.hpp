@@ -15,10 +15,8 @@ namespace coup {
             
 
         public:
-            Ambassador(Game, string);
-            void income();
-            void foreign_aid();
-            void block(Player);
-            void transfer(Player, Player);
+            Ambassador() : Player(){}
+            Ambassador(Game &game, string): Player(){}
+            void transfer(Player, Player){}
     };
 }

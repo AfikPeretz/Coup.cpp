@@ -15,9 +15,7 @@ namespace coup {
             
 
         public:
-            Duke(Game, string);
-            int coins();
-            void block(Player);
-            void tax();
+            Duke(Game, string): Player(){}
+            void tax(){}
     };
 }

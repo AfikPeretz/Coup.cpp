@@ -32,4 +32,7 @@ namespace coup {
     void Player::role(){
 
     }
+    void Player::block(Player){
+
+    }
 }

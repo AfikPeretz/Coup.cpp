@@ -15,10 +15,7 @@ namespace coup {
             
 
         public:
-            Contessa(Game, string);
-            void income();
-            void foreign_aid();
-            void block(Player);
-            
+            Contessa(Game, string): Player(){}
+           
     };
 }

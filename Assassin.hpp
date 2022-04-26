@@ -15,12 +15,8 @@ namespace coup {
             
 
         public:
-            Assassin(Game, string);
-            void income();
-            void foreign_aid();
-            int coins();
-            void block(Player);
-            void coup (Player);
+            Assassin(Game, string): Player(){}
+            void coup (Player){}
             
     };
 }

@@ -4,18 +4,17 @@
 
 namespace coup {
 
+
+
     Game::Game() {
 
     }
 
-
-    void Game::add_player(Player &player){
-
+    vector<string> Game::players(){
+        vector<string> a;
+        return a;
     }
 
-    void Game::print_players(){
-        
-    }
 
     string Game::turn(){
         return "dfs";
