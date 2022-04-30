@@ -16,7 +16,7 @@ namespace coup {
 
         public:
             Assassin(Game, string): Player(){}
-            void coup (Player){}
+            void coup(Player &player){}
             
     };
 }

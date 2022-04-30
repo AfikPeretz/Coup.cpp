@@ -17,5 +17,6 @@ namespace coup {
         public:
             Duke(Game, string): Player(){}
             void tax(){}
+            void block(){}
     };
 }

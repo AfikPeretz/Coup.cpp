@@ -18,6 +18,7 @@ namespace coup {
 
         public:
             Captain(Game, string): Player(){}
-            void steal(Player){}
+            void steal(Player &player){}
+            void TheftBlocking(Captain &Captain){}
     };
 }

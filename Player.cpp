@@ -8,16 +8,9 @@ namespace coup {
         
     }
 
-    void Player::die(){
-
-    }
-
-    void Player::revive(){
-        
-    }
 
     void Player::income(){
-
+        
     }
 
     void Player::foreign_aid(){
@@ -30,9 +23,6 @@ namespace coup {
     }
 
     void Player::role(){
-
-    }
-    void Player::block(Player){
 
     }
 }

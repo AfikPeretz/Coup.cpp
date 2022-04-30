@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdlib.h>
 #include "Player.hpp"
+#include "Assassin.hpp"
 using namespace std;
 
 
@@ -16,6 +17,7 @@ namespace coup {
 
         public:
             Contessa(Game, string): Player(){}
+            void AssassinationBlock (Assassin &assassin){}
            
     };
 }

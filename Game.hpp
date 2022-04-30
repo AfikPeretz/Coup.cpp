@@ -4,7 +4,10 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#include <map>
 #include "Player.hpp"
+#define MaxPlayers 6
+#define MinPayers 2
 using namespace std;
 
 
@@ -13,12 +16,14 @@ namespace coup {
 
     class Game {
         protected:
-            
+            vector<Player> playerList;
+            int players = playerList.size();
+
 
 
         public:
-            vector<string> players();
             Game();
+            vector<string> players();
             string turn();
             
     };
