@@ -14,19 +14,26 @@ using namespace std;
 namespace coup {
     class Player {
         protected:
-            int coins;
+            Game game;
+            int coin;
             string name;
             string role_name;
             bool isPlaying;
-            Game game;
+            bool isAlive;
+            
 
 
         public: 
+            Player(Game game, string name, string role_name, bool isPlaying, bool isAlive);
             void income();
             void foreign_aid();
             void coup(Player &player);
             int coins();
             void role();
+            void dead();
+            void revive();
+
+            
             
 
     };

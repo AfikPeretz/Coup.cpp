@@ -4,6 +4,16 @@
 
 namespace coup {
 
+    Player::Player(Game game, string name, string role_name, bool isPlaying, bool isAlive){
+        this -> game = game;
+        this -> coin = 0;
+        this -> name = name;
+        this -> role_name = role_name;
+        this -> isPlaying = true;
+        this -> isAlive = true;
+    }
+
+
     void Player::coup(Player &player){
         
     }
@@ -18,8 +28,8 @@ namespace coup {
     }
 
     int Player::coins(){
-        int a = 5;
-        return a;
+        
+        return this->coin;
     }
 
     void Player::role(){
