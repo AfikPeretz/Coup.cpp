@@ -18,8 +18,9 @@ namespace coup {
             
 
         public:
-            Ambassador() : Player(){}
-            Ambassador(Game &game, string): Player(){}
+            Ambassador(Game &game, string name): Player(game, name, "Ambassador"){
+
+            }
             void transfer(Player &player1, Player &player2){}
             void TheftBlocking(Captain &Captain){}
     };

@@ -16,25 +16,24 @@ namespace coup {
         protected:
             Game game;
             int coin;
-            string name;
-            string role_name;
+            string roleName;
             bool isPlaying;
             bool isAlive;
-            
+            int playerNumber = 0;
+            string name;
 
 
         public: 
-            Player(Game game, string name, string role_name, bool isPlaying, bool isAlive);
+            Player(Game &game, string name, string roleName) : game(game), name(name), roleName(roleName), coin(0), isPlaying(true), isAlive(true), playerNumber(playerNumber +1){}
             void income();
             void foreign_aid();
             void coup(Player &player);
             int coins();
             void role();
-            void dead();
+            bool dead();
             void revive();
-
-            
-            
-
+            ~Player();
+        
+        friend class Game;
     };
 }

@@ -15,16 +15,23 @@ using namespace std;
 namespace coup {
 
     class Game {
-        protected:
+        private:
             vector<Player> playerList;
-            int players = playerList.size();
+            map<string, vector<Player* >> roles;
+            vector<string> roleList = {"Duke", "Assassin", "Ambassador", "Captain", "Contessa"};
+            int curPlayer = 0;
 
+            
+            
 
 
         public:
             Game();
             vector<string> players();
             string turn();
+            string winner();
+            void add_player(Player &p);
+            ~Game(){}
             
     };
 }
