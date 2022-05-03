@@ -54,7 +54,7 @@ namespace coup {
     }
 
 
-    void Game::add_player(Player &p){
+    void Game::addPlayer(Player &p){
         int size = this->playerList.size();
         p.playerNumber = size;
         this->playerList.push_back(p);

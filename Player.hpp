@@ -14,6 +14,9 @@ using namespace std;
 
 namespace coup {
     class Player {
+        friend class Game;
+        friend class Ambassador;
+        
         protected:
             Game game;
             int coin;
@@ -35,7 +38,5 @@ namespace coup {
             bool dead();
             void revive();
             ~Player();
-        
-        friend class Game;
     };
 }

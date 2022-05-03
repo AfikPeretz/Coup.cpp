@@ -29,7 +29,7 @@ namespace coup {
             string turn();
             void endTurn();
             string winner();
-            void add_player(Player &p);
+            void addPlayer(Player &p);
             ~Game(){}
     };
 }

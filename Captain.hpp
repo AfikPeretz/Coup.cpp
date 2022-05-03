@@ -17,8 +17,12 @@ namespace coup {
             
 
         public:
-            Captain(Game, string): Player(){}
+            Captain(Game, string): Player(game, name, "Captain"){
+                this -> game.addPlayer(*this);
+            }
             void steal(Player &player){}
             void TheftBlocking(Captain &Captain){}
+        
+        friend class Ambassador;
     };
 }

@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "Player.hpp"
 #include "Captain.hpp"
+#define captainsteal 2
 using namespace std;
 
 
@@ -13,15 +14,13 @@ using namespace std;
 namespace coup {
     class Ambassador: public Player {
         private:
-            
-
-            
 
         public:
             Ambassador(Game &game, string name): Player(game, name, "Ambassador"){
-
+                this -> game.addPlayer(*this);
             }
-            void transfer(Player &player1, Player &player2){}
-            void TheftBlocking(Captain &Captain){}
+            void TheftBlocking(Captain &Captain);
+            void transfer(Player &p1, Player &p2);
+            ~Ambassador();
     };
 }
