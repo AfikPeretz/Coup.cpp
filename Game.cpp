@@ -9,6 +9,9 @@ namespace coup {
     Game::Game() {
         for (string role : roleList){
             pair<string, vector<coup::Player* >> pair = {role, vector<Player* >()};
+            if (roles.size() > MaxPlayers){
+                throw invalid_argument("too many players");
+            }
             roles.insert(pair);
         }
     }
@@ -19,6 +22,15 @@ namespace coup {
         string s = this -> playerList.at(this -> curPlayer).name;
         return s;
     }
+
+
+    void Game::endTurn(){
+    int playerLIstSize = this -> playerList.size();
+    this -> curPlayer = (this -> curPlayer + 1) % playerLIstSize;
+    while (this -> playerList.at(this -> curPlayer).isPlaying == false){
+        this -> curPlayer = (this -> curPlayer + 1) % playerLIstSize;
+    }
+}
 
 
     string Game::winner(){

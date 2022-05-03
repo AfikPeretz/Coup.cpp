@@ -21,17 +21,15 @@ namespace coup {
             vector<string> roleList = {"Duke", "Assassin", "Ambassador", "Captain", "Contessa"};
             int curPlayer = 0;
 
-            
-            
 
 
         public:
             Game();
             vector<string> players();
             string turn();
+            void endTurn();
             string winner();
             void add_player(Player &p);
             ~Game(){}
-            
     };
 }
