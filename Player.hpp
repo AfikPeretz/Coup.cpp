@@ -16,7 +16,10 @@ namespace coup {
     class Player {
         friend class Game;
         friend class Ambassador;
-        
+        friend class Captain;
+        friend class Contessa;
+        friend class Duke;
+      
         protected:
             Game game;
             int coin;

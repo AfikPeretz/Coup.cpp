@@ -16,8 +16,11 @@ namespace coup {
             
 
         public:
-            Contessa(Game, string): Player(){}
-            void AssassinationBlock (Assassin &assassin){}
+            Contessa(Game &game, string name): Player(game, name, "Contessa"){
+                this -> game.addPlayer(*this);
+            }
+            void AssassinationBlock (Assassin &assassin);
+            ~Contessa();
            
     };
 }

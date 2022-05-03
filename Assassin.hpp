@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdlib.h>
 #include "Player.hpp"
+#define assassinCoup 3
 using namespace std;
 
 
@@ -15,8 +16,11 @@ namespace coup {
             
 
         public:
-            Assassin(Game, string): Player(){}
-            void coup(Player &player){}
+            Assassin(Game, string): Player(game, name, "Assassin"){
+                this -> game.addPlayer(*this);
+            }
+            void coup(Player &p);
+            ~Assassin();
             
     };
 }
