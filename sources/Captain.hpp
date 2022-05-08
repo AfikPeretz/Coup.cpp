@@ -20,10 +20,11 @@ namespace coup {
         public:
             Player *bS;
             Captain(Game, string): Player(game, name, "Captain"){
-                this -> game.addPlayer(*this);
+                game.addPlayer(*this);
+                bS = nullptr;
             }
-            void steal(Player &p){}
-            void TheftBlocking(Captain &Captain){}
+            void steal(Player &);
+            void block(Player &);
             ~Captain();
         
         friend class Ambassador;

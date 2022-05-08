@@ -21,6 +21,5 @@ namespace coup {
             }
             void tax();
             void block(Player &p);
-            ~Duke();
     };
 }

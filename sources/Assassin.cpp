@@ -5,22 +5,22 @@
 namespace coup {
 
     void Assassin::coup(Player &p){
-        if (this->game.turn() != this->name){
-            throw invalid_argument("Wait to your turn!");
-        }
-        else if (this->coin < assassinCoup){
-            throw invalid_argument("You do not have enough coins to perform this operation!");
-        }
-        else{
-            this->coin = this->coin - assassinCoup;
+        if (!p.dead() && this->coin < couPrice && this -> coin >= assassinCoup){
             p.dead();
+            this-> coin =  this-> coin - assassinCoup;
+            this->game.addB(this, "Contessa");
+            this->sCoup = &p;
             this->game.endTurn();
         }
+        else if (!p.dead() && this->coin >= couPrice){
+            p.dead();
+            this->coin = this-> coin - couPrice;
+            this->game.endTurn();
+        }
+        else{
+            throw invalid_argument ("error\n");
+        }
     }
 
-    Assassin::~Assassin(){
-        
-    }
-    
-
+   
 }

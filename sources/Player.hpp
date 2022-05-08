@@ -8,6 +8,7 @@
 #define incomeBonus 1
 #define couPrice 7
 #define foreignAidBonus 2
+#define maxCapacity 10
 using namespace std;
 
 
@@ -35,7 +36,7 @@ namespace coup {
         public: 
             Player(Game &game, string name, string roleName) : game(game), name(name), bR(vector<string>()), roleName(roleName), coin(0), canGetHurt(false), isPlaying(true), isAlive(true), playerNumber(0){}
             void income();
-            void foreign_aid();
+            virtual void foreign_aid();
             void coup(Player &p);
             int coins();
             string role();

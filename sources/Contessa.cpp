@@ -2,18 +2,21 @@
 
 namespace coup {
 
-    void Contessa::AssassinationBlock (Assassin &assassin){
+    void Contessa::block (Player &p){
         if (this->game.turn() != this->name){
             throw invalid_argument("Wait to your turn!");
         }
-        assassin.coin = assassin.coin + assassinCoup;
-        this -> isAlive = true;
-        this -> revive();
-        this -> game.endTurn();
+        size_t x = 0;
+        if (this -> game.blockPosibly(p, "Contessa")){
+            Assassin &assassin = dynamic_cast<Assassin &>(p);
+            x++;
+            assassin.sCoup->revive();
+        }
+        else{
+            x++;
+            throw invalid_argument("error");
+        }
     }
 
-    Contessa::~Contessa(){
-        
-    }
 
 }

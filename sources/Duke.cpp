@@ -6,17 +6,21 @@ namespace coup {
         if (this->game.turn() != this->name){
             throw invalid_argument("Wait to your turn!");
         }
-        this->coin = this->coin + DukeTax;
-        this->game.endTurn();
+        if (this -> coin >= maxCapacity){
+            throw invalid_argument("you have reached the capacity limit!");
+        }
+        this -> coin = this -> coin + DukeTax;
+        this -> game.endTurn();
     }
 
     void Duke::block(Player &p){
-        p.coin = p.coin - foreignAidBonus;
-        this->game.endTurn();
+        if (!this -> game.blockPosibly(p, "Duke")){
+            throw invalid_argument("error");
+        }
+        else{
+            p.coin = p.coin + foreignAidBonus;
+        }
     }
 
-    Duke::~Duke(){
-
-    }
 
 }

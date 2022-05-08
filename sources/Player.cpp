@@ -9,6 +9,9 @@ namespace coup {
         if (this->coin < couPrice){
             throw invalid_argument("You do not have enough coins to perform this operation!");
         }
+        if (p.dead() == true){
+            throw invalid_argument("The player is dead already");
+        }
         else{
             this->coin = coin - couPrice;
             p.dead();
@@ -39,6 +42,9 @@ namespace coup {
     void Player::foreign_aid(){
         if (this -> game.turn() != this -> name){
             throw invalid_argument("Wait to your turn!");
+        }
+        else if (this -> coin >= maxCapacity){
+            throw invalid_argument("you have reached the capacity limit!");
         }
         else{
             this -> game.addB(this, "Duke");

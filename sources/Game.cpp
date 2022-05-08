@@ -30,7 +30,7 @@ namespace coup {
 
 
     void Game::endTurn(){
-    int playerLIstSize = this -> playerList.size();
+    size_t playerLIstSize = this -> playerList.size();
     if ( playerLIstSize <=  MinPlayers || playerLIstSize >=  MaxPlayers){
         throw invalid_argument("The number of players does not match the requirements");
     }
@@ -40,17 +40,20 @@ namespace coup {
         this -> curPlayer = (this -> curPlayer + 1) % playerLIstSize;
     }
     this->removePCBB();
-    // Player &cp = *this->playerList.at(this->curPlayer);
-    // if (cp.roleName == "Assassin" || cp.roleName == "Captain"){
-    //     if (cp.roleName == "Assassin"){
-    //         Assassin &assassin = dynamic_cast<Assassin &>(cp);
-    //         assassin.sCoup = nullptr;
-    //     }
-    //     if (cp.roleName == "Captain"){
-    //         Captain &captain = dynamic_cast<Captain &>(cp);
-    //         captain.bS = nullptr;
-    //     }
-    // }
+    Player &cp = *this->playerList.at(this->curPlayer);
+    size_t x = 0;
+    if (cp.roleName == "Assassin" || cp.roleName == "Captain"){
+        if (cp.roleName == "Assassin"){
+            Assassin &assassin = dynamic_cast<Assassin &>(cp);
+            x++;
+            assassin.sCoup = nullptr;
+        }
+        if (cp.roleName == "Captain"){
+            Captain &captain = dynamic_cast<Captain &>(cp);
+            x--;
+            captain.bS = nullptr;
+        }
+    }
 }
 
 
@@ -102,7 +105,7 @@ namespace coup {
     }
 
 
-    bool Game::blockPosibly(Player &p, string &mr){
+    bool Game::blockPosibly(Player &p, const string &mr){
         vector<Player *> &pp = this -> roles.at(mr);
         bool ans = true;
         size_t i = 0;

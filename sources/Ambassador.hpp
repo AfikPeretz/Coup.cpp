@@ -19,7 +19,7 @@ namespace coup {
             Ambassador(Game& game, string name): Player(game, name, "Ambassador"){
                 this -> game.addPlayer(*this);
             }
-            void TheftBlocking(Captain &Captain);
+            void block(Player &);
             void transfer(Player &p1, Player &p2);
             
     };

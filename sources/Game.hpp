@@ -37,7 +37,7 @@ namespace coup {
             string winner();
             void addPlayer(Player &p); 
             void addB(Player* p, const string &);
-            bool blockPosibly(Player &p, string &mr); 
+            bool blockPosibly(Player &p, const string &mr); 
             void removePCBB(); 
     };
 }
