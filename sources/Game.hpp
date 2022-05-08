@@ -24,13 +24,14 @@ namespace coup {
             vector<Player* > playerList;
             map<string, vector<Player* >> roles;
             vector<string> roleList = {"Duke", "Assassin", "Ambassador", "Captain", "Contessa"};
-            size_t curPlayer;
+            int curPlayer;
             string TheWinner;
 
 
 
         public:
             Game();
+            ~Game() {}
             vector<string> players();
             string turn();
             void endTurn();

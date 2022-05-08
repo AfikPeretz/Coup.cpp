@@ -1,4 +1,6 @@
 #include "Game.hpp"
+#include "Assassin.hpp"
+#include "Captain.hpp"
 #include "Player.hpp"
 
 
@@ -14,7 +16,7 @@ namespace coup {
         size_t size = roles.size();
         for (string role : roleList){
             pair<string, vector<Player* >> pair = {role, vector<Player* >()};
-            if (size > MaxPlayers){
+            if (size >= MaxPlayers){
                 throw invalid_argument("too many players");
             }
             roles.insert(pair);

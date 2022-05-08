@@ -4,7 +4,10 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#ifndef PLAYER_H
+#define PLAYER_H
 #include "Player.hpp"
+#endif
 #define DukeTax 3
 using namespace std;
 

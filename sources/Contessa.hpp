@@ -4,7 +4,10 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#ifndef PLAYER_H
+#define PLAYER_H
 #include "Player.hpp"
+#endif
 #include "Assassin.hpp"
 using namespace std;
 

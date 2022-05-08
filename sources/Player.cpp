@@ -12,11 +12,9 @@ namespace coup {
         if (p.dead() == true){
             throw invalid_argument("The player is dead already");
         }
-        else{
-            this->coin = coin - couPrice;
-            p.dead();
-            this->game.endTurn();
-        }
+        this->coin = coin - couPrice;
+        p.dead();
+        this->game.endTurn();
     }
 
 
@@ -24,10 +22,8 @@ namespace coup {
         if (this -> game.turn() != this -> name){
             throw invalid_argument("Wait to your turn!");
         }
-        else{
-            this -> coin = coin + incomeBonus;
-            this -> game.endTurn();
-        }
+        this -> coin = coin + incomeBonus;
+        this -> game.endTurn();
     }
 
 
@@ -43,15 +39,13 @@ namespace coup {
         if (this -> game.turn() != this -> name){
             throw invalid_argument("Wait to your turn!");
         }
-        else if (this -> coin >= maxCapacity){
+        if (this -> coin >= maxCapacity){
             throw invalid_argument("you have reached the capacity limit!");
         }
-        else{
-            this -> game.addB(this, "Duke");
-            this -> canGetHurt = true;
-            this -> coin = coin + foreignAidBonus;
-            this -> game.endTurn();
-        }
+        this -> game.addB(this, "Duke");
+        this -> canGetHurt = true;
+        this -> coin = coin + foreignAidBonus;
+        this -> game.endTurn();
     }
 
     void Player::revive(){

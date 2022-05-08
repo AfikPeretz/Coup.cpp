@@ -1,4 +1,8 @@
 #include "Contessa.hpp"
+#ifndef ASSASSIN_H
+#define ASSASSIN_H
+#include "Assassin.hpp"
+#endif
 
 namespace coup {
 

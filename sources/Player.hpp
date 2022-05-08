@@ -16,6 +16,7 @@ using namespace std;
 namespace coup {
     class Player {
         friend class Game;
+        friend class Assassin;
         friend class Ambassador;
         friend class Captain;
         friend class Contessa;
@@ -24,23 +25,24 @@ namespace coup {
         protected:
             Game& game;
             vector<string> bR;
-            size_t coin;
+            int coin;
             string roleName;
-            bool canGetHurt;
             bool isPlaying;
             bool isAlive;
-            size_t playerNumber;
+            int playerNumber;
             string name;
+            bool canGetHurt;
 
 
         public: 
-            Player(Game &game, string name, string roleName) : game(game), name(name), bR(vector<string>()), roleName(roleName), coin(0), canGetHurt(false), isPlaying(true), isAlive(true), playerNumber(0){}
+            Player(Game &game, string name, string roleName = "didnt have yet") : game(game), name(name), bR(vector<string>()), roleName(roleName), coin(0), canGetHurt(false), isPlaying(true), isAlive(true), playerNumber(0){}
+            ~Player() {}
             void income();
-            virtual void foreign_aid();
+            void foreign_aid();
             void coup(Player &p);
             int coins();
             string role();
             bool dead();
-            void revive();
+            virtual void revive();
     };
 }

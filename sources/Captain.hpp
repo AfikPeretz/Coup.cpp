@@ -5,7 +5,10 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#ifndef PLAYER_H
+#define PLAYER_H
 #include "Player.hpp"
+#endif
 #define captainsteal 2
 using namespace std;
 using namespace coup;

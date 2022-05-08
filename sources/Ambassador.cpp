@@ -1,5 +1,8 @@
 #include "Ambassador.hpp"
-
+#ifndef CAP_H
+#define CAP_H
+#include "Captain.hpp"
+#endif
 
 
 namespace coup {

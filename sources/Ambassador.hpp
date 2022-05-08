@@ -4,8 +4,11 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
-#include "Player.hpp"
 #include "Captain.hpp"
+#ifndef PLAYER_H
+#define PLAYER_H
+#include "Player.hpp"
+#endif
 #define captainsteal 2
 using namespace std;
 
