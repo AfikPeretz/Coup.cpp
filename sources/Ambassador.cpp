@@ -25,8 +25,6 @@ namespace coup {
         p2.coin = p1.coin +1;
         this->game.endTurn();
     }
-    Ambassador::~Ambassador() {
-        
-    }
+    
 
 }

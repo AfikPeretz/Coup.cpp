@@ -21,18 +21,19 @@ namespace coup {
         friend class Duke;
       
         protected:
-            Game game;
-            int coin;
+            Game& game;
+            vector<string> bR;
+            size_t coin;
             string roleName;
             bool canGetHurt;
             bool isPlaying;
             bool isAlive;
-            int playerNumber = 0;
+            size_t playerNumber;
             string name;
 
 
         public: 
-            Player(Game &game, string name, string roleName) : game(game), name(name), roleName(roleName), coin(0), canGetHurt(false), isPlaying(true), isAlive(true), playerNumber(playerNumber +1){}
+            Player(Game &game, string name, string roleName) : game(game), name(name), bR(vector<string>()), roleName(roleName), coin(0), canGetHurt(false), isPlaying(true), isAlive(true), playerNumber(0){}
             void income();
             void foreign_aid();
             void coup(Player &p);
@@ -40,6 +41,5 @@ namespace coup {
             string role();
             bool dead();
             void revive();
-            ~Player();
     };
 }

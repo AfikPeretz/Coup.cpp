@@ -5,22 +5,22 @@
 #include <vector>
 #include <stdlib.h>
 #include "Player.hpp"
-#define assassinCoup 3
+#include "Captain.hpp"
+#define captainsteal 2
 using namespace std;
 
 
 
 namespace coup {
-    class Assassin: public Player {
+    class Ambassador: public Player {
         private:
-            
 
         public:
-            Assassin(Game, string): Player(game, name, "Assassin"){
+            Ambassador(Game& game, string name): Player(game, name, "Ambassador"){
                 this -> game.addPlayer(*this);
             }
-            void coup(Player &p);
-            ~Assassin();
+            void TheftBlocking(Captain &Captain);
+            void transfer(Player &p1, Player &p2);
             
     };
 }

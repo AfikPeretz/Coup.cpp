@@ -18,25 +18,15 @@ namespace coup {
 
 
     void Player::income(){
-        if (this -> game.turn() == this -> name){
-            this -> coin = coin + incomeBonus;
-            this -> game.endTurn();
-        }
-        else{
-            throw invalid_argument("Wait to your turn!");
-        }
-    }
-
-    void Player::foreign_aid(){
         if (this -> game.turn() != this -> name){
             throw invalid_argument("Wait to your turn!");
         }
         else{
-            this -> canGetHurt = true;
-            this -> coin = coin + foreignAidBonus;
+            this -> coin = coin + incomeBonus;
             this -> game.endTurn();
         }
     }
+
 
     bool Player::dead(){
         return this -> isAlive = false;
@@ -44,6 +34,18 @@ namespace coup {
 
     int Player::coins(){
         return this -> coin;
+    }
+
+    void Player::foreign_aid(){
+        if (this -> game.turn() != this -> name){
+            throw invalid_argument("Wait to your turn!");
+        }
+        else{
+            this -> game.addB(this, "Duke");
+            this -> canGetHurt = true;
+            this -> coin = coin + foreignAidBonus;
+            this -> game.endTurn();
+        }
     }
 
     void Player::revive(){
@@ -54,7 +56,4 @@ namespace coup {
         return this -> roleName;
     }
 
-    Player::~Player() {
-        
-    }
 }

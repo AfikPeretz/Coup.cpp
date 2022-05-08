@@ -6,20 +6,26 @@
 #include <stdlib.h>
 #include <map>
 #include "Player.hpp"
+#include "Assassin.hpp"
+#include "Captain.hpp"
 #define MaxPlayers 6
-#define MinPayers 2
+#define MinPlayers 2
 using namespace std;
 
 
 
 namespace coup {
-
+    
     class Game {
+
         private:
-            vector<Player> playerList;
+            bool gameRuning;
+            vector<string> players; 
+            vector<Player* > playerList;
             map<string, vector<Player* >> roles;
             vector<string> roleList = {"Duke", "Assassin", "Ambassador", "Captain", "Contessa"};
-            int curPlayer = 0;
+            size_t curPlayer;
+            string TheWinner;
 
 
 
@@ -29,7 +35,9 @@ namespace coup {
             string turn();
             void endTurn();
             string winner();
-            void addPlayer(Player &p);
-            ~Game(){}
+            void addPlayer(Player &p); 
+            void addB(Player* p, const string &);
+            bool blockPosibly(Player &p, string &mr); 
+            void removePCBB(); 
     };
 }

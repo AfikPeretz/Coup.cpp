@@ -18,6 +18,7 @@ namespace coup {
             
 
         public:
+            Player *bS;
             Captain(Game, string): Player(game, name, "Captain"){
                 this -> game.addPlayer(*this);
             }
