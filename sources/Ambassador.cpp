@@ -1,40 +1,35 @@
 #include "Ambassador.hpp"
-#ifndef CAP_H
-#define CAP_H
 #include "Captain.hpp"
-#endif
 
 
-namespace coup {
-    
-
-    void Ambassador::block(Player &p){
-        int x = 0;
-        if (!this->game.blockPosibly(p, "Ambassador")){
-           throw invalid_argument("can not block!");
-        }
-        p.coin = p.coin - captainsteal;
-        x++;
-        Captain &captain = dynamic_cast<Captain &>(p); 
-        captain.bS -> coin += captainsteal;
+void coup::Ambassador::transfer(coup::Player &from, coup::Player &to)
+{
+    if (this->n_coins >= must_coup)
+    {
+        throw "You have atleast 10 coins you must coup!\n";
     }
 
-
-
-    void Ambassador::transfer(Player &p1, Player &p2){
-        if (this->game.turn() != this->name){
-            throw invalid_argument("Wait to your turn!");
-        }
-        if (p1.coin<1){
-            throw invalid_argument("not have enough balance");
-        }
-        if (this->coin >= maxCapacity){
-            throw invalid_argument("coup is not a choice!");
-        }
-        p1.coin = p1.coin -1;
-        p2.coin = p1.coin +1;
-        this->game.endTurn();
+    if (from.n_coins > 0)
+    {
+        from.n_coins -= 1;
+        to.n_coins += 1;
+        this->game.endThisTurn();
     }
-    
-
+    else
+    {
+        throw "Not Enough Coins\n";
+    }
+}
+void coup::Ambassador::block(coup::Player &player)
+{
+    if (this->game.Blockable(player, "Ambassador"))
+    {
+        player.n_coins -= captain_steals;
+        coup::Captain &captain = dynamic_cast<Captain &>(player); // player must be a Captain
+        captain.stole_from->n_coins += captain_steals;
+    }
+    else
+    {
+        throw "Invalid Block\n";
+    }
 }

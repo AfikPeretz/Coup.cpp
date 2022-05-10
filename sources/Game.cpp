@@ -1,144 +1,142 @@
-#include "Game.hpp"
+#include <iostream>
+#include <stdexcept>
+#include "Player.hpp"
 #include "Assassin.hpp"
 #include "Captain.hpp"
-#include "Player.hpp"
 
 
 
-namespace coup {
 
+void coup::Game::rbpfl()
+{
+    coup::Player *player = this->listOfPlayer.at(this->current_player);
 
-
-    Game::Game() {
-        gameRuning = false;
-        TheWinner = "";
-        curPlayer = 0;
-        size_t size = roles.size();
-        for (string role : roleList){
-            pair<string, vector<Player* >> pair = {role, vector<Player* >()};
-            if (size >= MaxPlayers){
-                throw invalid_argument("too many players");
+    for (auto &pair : this->blockmap)
+    {
+        std::vector<coup::Player *> &players_by_role = this->blockmap.at(pair.first);
+        long i = 0;
+        for (coup::Player *p_player : players_by_role)
+        {
+            if (p_player->name == player->name)
+            {
+                players_by_role.erase(players_by_role.begin() + i);
             }
-            roles.insert(pair);
-        }
-    }
-
-
-
-    string Game::turn(){
-        string s = this -> playerList.at(this -> curPlayer) -> name;
-        return s;
-    }
-
-
-    void Game::endTurn(){
-    size_t playerLIstSize = this -> playerList.size();
-    if ( playerLIstSize <=  MinPlayers || playerLIstSize >=  MaxPlayers){
-        throw invalid_argument("The number of players does not match the requirements");
-    }
-    this -> gameRuning = true;
-    this -> curPlayer = (this -> curPlayer + 1) % playerLIstSize;
-    while (this -> playerList.at(this -> curPlayer) -> isPlaying == false){
-        this -> curPlayer = (this -> curPlayer + 1) % playerLIstSize;
-    }
-    this->removePCBB();
-    Player &cp = *this->playerList.at(this->curPlayer);
-    size_t x = 0;
-    if (cp.roleName == "Assassin" || cp.roleName == "Captain"){
-        if (cp.roleName == "Assassin"){
-            Assassin &assassin = dynamic_cast<Assassin &>(cp);
-            x++;
-            assassin.sCoup = nullptr;
-        }
-        if (cp.roleName == "Captain"){
-            Captain &captain = dynamic_cast<Captain &>(cp);
-            x--;
-            captain.bS = nullptr;
+            i++;
         }
     }
 }
 
-
-    string Game::winner(){
-        int count = 0;
-        for (Player *p : this -> playerList){
-            if (p -> dead() == true){
-                count++;
-            }
+std::vector<std::string> coup::Game::players()
+{
+    std::vector<std::string> names;
+    for (coup::Player *player : this->listOfPlayer)
+    {
+        if (player->is_alive())
+        {
+            names.push_back(player->name);
         }
-        if (count != 1){
-            throw invalid_argument("the game is not over yet");
-        }
-        else{
-            for (Player *p : this->playerList){
-                if (p -> dead() == false){
-                    TheWinner = p -> name;
-                    return TheWinner;
-                }
-            }
-        } 
     }
 
+    return names;
+}
 
-    vector<string> Game::players(){
-        vector<string> PlayerNames;
-        for (Player *player : this -> playerList){
-            if (player -> dead() == false){
-                PlayerNames.push_back(player -> name);
-            }
+std::string coup::Game::turn()
+{
+    return this->listOfPlayer.at(this->current_player)->name;
+}
+
+void coup::Game::addParticipants(coup::Player &player)
+{
+    if (this->listOfPlayer.size() < maximumParticipants && !this->isthegamestart)
+    {
+        this->listOfPlayer.push_back(&player);
+    }
+    else
+    {
+        throw std::runtime_error("Cannot Add More Players!\n");
+    }
+}
+
+void coup::Game::endThisTurn()
+{
+    if (this->listOfPlayer.size() <= 1)
+    {
+        throw "Too few players!\n";
+    }
+    if (!this->isthegamestart)
+    {
+        this->isthegamestart = true;
+    }
+
+    // get next player that is in game
+    this->current_player = (this->current_player + 1) % this->listOfPlayer.size();
+
+    while (!this->listOfPlayer.at(this->current_player)->in_game)
+    {
+        this->current_player = (this->current_player + 1) % this->listOfPlayer.size();
+    }
+
+    this->rbpfl();
+
+    coup::Player &c_player = *this->listOfPlayer.at(this->current_player);
+
+    if (c_player.role_name == "Assassin")
+    {
+        coup::Assassin &assassin = dynamic_cast<Assassin &>(c_player);
+        assassin.last_special_coup = nullptr;
+    }
+    else if (c_player.role_name == "Captain")
+    {
+        coup::Captain &captain = dynamic_cast<Captain &>(c_player);
+        captain.stole_from = nullptr;
+    }
+}
+
+void coup::Game::insertToBlockableList(coup::Player *player, const std::string &blocking_role)
+{
+    this->blockmap.at(blocking_role).push_back(player);
+}
+
+bool coup::Game::Blockable(coup::Player &player_to_block, const std::string &my_role)
+{
+    std::vector<coup::Player *> &potential_players = this->blockmap.at(my_role);
+    long i = 0;
+    for (const coup::Player *player : potential_players)
+    {
+        if (player->name == player_to_block.name)
+        {
+            potential_players.erase(potential_players.begin() + i);
+            return true;
         }
-        return PlayerNames;
+        i++;
     }
 
+    return false;
+}
 
-    void Game::addPlayer(Player &p){
-        size_t size = this->playerList.size();
-        p.playerNumber = size;
-        if (size > MaxPlayers || gameRuning == false){
-            throw invalid_argument("can not add players");
+std::string coup::Game::winner()
+{
+    if (this->listOfPlayer.size() <= 1)
+    {
+        throw "Too few players!\n";
+    }
+
+    int counter = 0;
+    std::string winner_name;
+
+    for (coup::Player *player : this->listOfPlayer)
+    {
+        if (player->in_game)
+        {
+            counter++;
+            winner_name = player->name;
         }
-        this->playerList.push_back(&p);
-        //this->roles.at(p.roleName).push_back(&p);
     }
 
-
-    void Game::addB(Player* p, const string &a){
-        this -> roles.at(a).push_back(p);
+    if (counter != 1)
+    {
+        throw "There are more players in the game!\n";
     }
 
-
-    bool Game::blockPosibly(Player &p, const string &mr){
-        vector<Player *> &pp = this -> roles.at(mr);
-        bool ans = true;
-        size_t i = 0;
-        for (Player *pl : pp){
-            if (pl->name == p.name){
-                pp.erase(pp.begin() + i);
-                return ans;
-            }
-            i++;
-        }
-        return !ans;
-    }
-
-    void Game::removePCBB(){
-        size_t x = 6;
-        Player *pl = this -> playerList.at(this -> curPlayer);
-        for (auto &pair : this -> roles){
-            x++;
-            size_t i = 0;
-            vector<coup::Player* > &pr = this -> roles.at(pair.first);
-            for (Player *ppl : pr){
-                if (ppl -> name == pl -> name){
-                    x--;
-                    pr.erase(pr.begin() + i);
-                }
-                i++;
-                x++;
-            }
-        }
-
-    }
-
-
+    return winner_name;
 }

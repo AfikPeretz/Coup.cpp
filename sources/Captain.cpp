@@ -1,50 +1,42 @@
 #include "Captain.hpp"
 
-
-
-namespace coup {
-
-    void Captain::steal(Player &p){
-        if (this->game.turn() != this -> name){
-            throw invalid_argument("Wait to your turn!");
-        }
-        if (p.coin < captainsteal){
-            throw invalid_argument("not have enough balance");
-        }
-        if (p.coin >= maxCapacity){
-            throw invalid_argument("coup is not a choice!");
-        }
-        if (p.coin >= captainsteal && this -> game.turn() == this -> name ){
-            this -> coin = this->coin + captainsteal;
-            p.coin =  p.coin - captainsteal;
-            this -> game.addB(this, "Ambassador");
-            this -> game.addB(this, "Captain");
-            this -> bS = &p;
-            this -> game.endTurn();
-        }
-        else if (this -> game.turn() == this -> name){
-            this->coin = this->coin + p.coin;
-            p.coin = 0;
-            this->game.endTurn();
-        }
+void coup::Captain::steal(coup::Player &player)
+{
+    if (this->n_coins >= must_coup)
+    {
+        throw "You have atleast 10 coins you must coup!\n";
     }
 
-
-
-    void Captain::block(Player &p){
-        int x = 0;
-        if (!this->game.blockPosibly(p, "Captain")){
-           throw invalid_argument("can not block!");
-        }
-        if ( !this->game.blockPosibly(p, "Ambassador")){
-           throw invalid_argument("can not block!");
-        }
-        p.coin = p.coin - captainsteal;
-        x++;
-        Captain &captain = dynamic_cast<Captain &>(p); 
-        captain.bS -> coin += captainsteal;
-        
+    if (this->game.turn() == this->name && player.n_coins >= captain_steals)
+    {
+        player.n_coins -= captain_steals;
+        this->n_coins += captain_steals;
+        this->game.insertToBlockableList(this, "Captain");
+        this->game.insertToBlockableList(this, "Ambassador");
+        this->stole_from = &player;
+        this->game.endThisTurn();
     }
-
-
+    else if (this->game.turn() == this->name && player.n_coins > 0)
+    {
+        this->n_coins += player.n_coins;
+        player.n_coins = 0;
+        this->game.endThisTurn();
+    }
+    else
+    {
+        throw "Not Enough Coins!\n";
+    }
+}
+void coup::Captain::block(coup::Player &player)
+{
+    if (this->game.Blockable(player, "Captain") && this->game.Blockable(player, "Ambassador"))
+    {
+        player.n_coins -= captain_steals;
+        coup::Captain &captain = dynamic_cast<Captain &>(player); // player must be a Captain
+        captain.stole_from->n_coins += captain_steals;
+    }
+    else
+    {
+        throw "Invalid Block\n";
+    }
 }

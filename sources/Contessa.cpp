@@ -1,26 +1,18 @@
 #include "Contessa.hpp"
-#ifndef ASSASSIN_H
-#define ASSASSIN_H
+
 #include "Assassin.hpp"
-#endif
 
-namespace coup {
 
-    void Contessa::block (Player &p){
-        if (this->game.turn() != this->name){
-            throw invalid_argument("Wait to your turn!");
-        }
-        size_t x = 0;
-        if (this -> game.blockPosibly(p, "Contessa")){
-            Assassin &assassin = dynamic_cast<Assassin &>(p);
-            x++;
-            assassin.sCoup->revive();
-        }
-        else{
-            x++;
-            throw invalid_argument("error");
-        }
+void coup::Contessa::block(coup::Player &player)
+{
+    if (this->game.Blockable(player, "Contessa"))
+    {
+        std::cout << "Can Block Assassin! " << std::endl;
+        coup::Assassin &assassin = dynamic_cast<Assassin &>(player); // player must be an Assassin
+        assassin.last_special_coup->revive();
     }
-
-
+    else
+    {
+        throw "Invalid Block\n";
+    }
 }

@@ -1,26 +1,32 @@
 #include "Duke.hpp"
 
-namespace coup {
-
-    void Duke::tax(){
-        if (this->game.turn() != this->name){
-            throw invalid_argument("Wait to your turn!");
-        }
-        if (this -> coin >= maxCapacity){
-            throw invalid_argument("you have reached the capacity limit!");
-        }
-        this -> coin = this -> coin + DukeTax;
-        this -> game.endTurn();
+void coup::Duke::tax()
+{
+    if (this->n_coins >= must_coup)
+    {
+        throw "You have atleast 10 coins you must coup!\n";
     }
 
-    void Duke::block(Player &p){
-        if (!this -> game.blockPosibly(p, "Duke")){
-            throw invalid_argument("error");
-        }
-        else{
-            p.coin = p.coin + foreignAidBonus;
-        }
+    if (this->game.turn() == this->name)
+    {
+        this->n_coins += 3;
+        this->game.endThisTurn();
     }
+    else
+    {
+        throw "This is not your turn!\n";
+    }
+}
 
-
+void coup::Duke::block(coup::Player &player)
+{
+    if (this->game.Blockable(player, "Duke"))
+    {
+        std::cout << "Duke Block Successfull!" << std::endl;
+        player.n_coins -= aid;
+    }
+    else
+    {
+        throw "Invalid Block!\n";
+    }
 }

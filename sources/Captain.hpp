@@ -1,35 +1,19 @@
-
-#pragma once
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <vector>
-#include <stdlib.h>
-#ifndef PLAYER_H
-#define PLAYER_H
 #include "Player.hpp"
-#endif
-#define captainsteal 2
-using namespace std;
-using namespace coup;
+#define captain_steals 2
 
+class coup::Captain : public coup::Player
+{
+private:
+    coup::Player *stole_from;
 
-
-namespace coup {
-    class Captain: public Player {
-        private:
-            
-
-        public:
-            Player *bS;
-            Captain(Game, string): Player(game, name, "Captain"){
-                game.addPlayer(*this);
-                bS = nullptr;
-            }
-            void steal(Player &);
-            void block(Player &);
-            ~Captain();
-        
-        friend class Ambassador;
-    };
-}
+public:
+    Captain(coup::Game &game, std::string player_name) : Player(game, player_name, "Captain"), stole_from(nullptr)
+    {
+        this->game.addParticipants(*this);
+    }
+    void steal(coup::Player &player);
+    void block(coup::Player &player);
+    ~Captain() {}
+    friend class Game;
+    friend class Ambassador;
+};

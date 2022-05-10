@@ -1,31 +1,19 @@
-#pragma once
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <vector>
-#include <stdlib.h>
-#ifndef PLAYER_H
-#define PLAYER_H
 #include "Player.hpp"
-#endif
-#include "Game.hpp"
-#define assassinCoup 3
-using namespace std;
 
+#define assassin_price 3
 
+class coup::Assassin : public coup::Player
+{
+private:
+    coup::Player *last_special_coup;
 
-namespace coup {
-    class Assassin: public Player {
-        private:
-            
-
-        public:
-            Player *sCoup;
-            Assassin(Game, string): Player(game, name, "Assassin"){
-                sCoup = nullptr;
-                game.addPlayer(*this);
-            }
-            void coup(Player &p);
-            
-    };
-}
+public:
+    Assassin(coup::Game &game, std::string player_name) : Player(game, player_name, "Assassin"), last_special_coup(nullptr)
+    {
+        game.addParticipants(*this);
+    }
+    virtual void coup(coup::Player &player);
+    ~Assassin() {}
+    friend class Game;
+    friend class Contessa;
+};

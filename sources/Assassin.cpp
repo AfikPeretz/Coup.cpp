@@ -1,26 +1,23 @@
 #include "Assassin.hpp"
-#include <iostream>
 
-
-namespace coup {
-
-    void Assassin::coup(Player &p){
-        if (!p.dead() && this->coin < couPrice && this -> coin >= assassinCoup){
-            p.dead();
-            this-> coin =  this-> coin - assassinCoup;
-            this->game.addB(this, "Contessa");
-            this->sCoup = &p;
-            this->game.endTurn();
-        }
-        else if (!p.dead() && this->coin >= couPrice){
-            p.dead();
-            this->coin = this-> coin - couPrice;
-            this->game.endTurn();
-        }
-        else{
-            throw invalid_argument ("error\n");
-        }
+void coup::Assassin::coup(coup::Player &player)
+{
+    if (player.is_alive() && this->n_coins >= assassin_price && this->n_coins < coup_price)
+    {
+        this->n_coins -= assassin_price;
+        player.die();
+        this->game.insertToBlockableList(this, "Contessa");
+        this->last_special_coup = &player;
+        this->game.endThisTurn();
     }
-
-   
+    else if (player.is_alive() && this->n_coins >= coup_price)
+    {
+        this->n_coins -= coup_price;
+        player.die();
+        this->game.endThisTurn();
+    }
+    else
+    {
+        throw "Player is already dead or you dont have enough coins!\n";
+    }
 }
