@@ -1,14 +1,25 @@
 #include "Player.hpp"
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
 
 
-class coup::Ambassador : public coup::Player
-{
-public:
-    Ambassador(coup::Game &game, std::string player_name) : Player(game, player_name, "Ambassador")
-    {
-        this->game.addParticipants(*this);
-    }
-    void transfer(coup::Player &from, coup::Player &to);
-    void block(coup::Player &player);
-    ~Ambassador() {}
+class coup::Ambassador : public coup::Player{
+    private: 
+        bool flag;
+        int size;
+
+
+    public:
+        Ambassador(coup::Game &game, string pn) : Player(game, pn, "Ambassador"){
+            flag = true;
+            this -> game.addParticipants(*this);
+            size = 0;
+        }
+
+
+        void block(coup::Player &);
+        void transfer(coup::Player &, coup::Player &);
+    
 };

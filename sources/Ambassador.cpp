@@ -1,35 +1,44 @@
 #include "Ambassador.hpp"
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
 #include "Captain.hpp"
 
 
-void coup::Ambassador::transfer(coup::Player &from, coup::Player &to)
-{
-    if (this->n_coins >= must_coup)
-    {
-        throw "You have atleast 10 coins you must coup!\n";
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Ambassador::block(coup::Player &p){
+    p.flag2 = true;
+    if (this -> game.Blockable(p, "Ambassador")){
+        p.coin = p.coin - cs;
+        p.flag1 = true;
+        coup::Captain &captain = dynamic_cast<Captain &>(p); 
+        captain.stf->coin =  captain.stf->coin + cs;
+    }
+    else{
+        p.flag1 = false;
+        throw "can not do this operation";
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Ambassador::transfer(coup::Player &f, coup::Player &t){
+    f.flag1 = true;
+    if (this -> coin >= maxCapacity){
+        f.flag2 = false;
+        throw "must coup";
     }
 
-    if (from.n_coins > 0)
-    {
-        from.n_coins -= 1;
-        to.n_coins += 1;
-        this->game.endThisTurn();
+    if (f.flag1 && f.coin > 0){
+        t.coin += 1;
+        f.coin -= 1;
+        this -> game.endThisTurn();
     }
-    else
-    {
-        throw "Not Enough Coins\n";
-    }
-}
-void coup::Ambassador::block(coup::Player &player)
-{
-    if (this->game.Blockable(player, "Ambassador"))
-    {
-        player.n_coins -= captain_steals;
-        coup::Captain &captain = dynamic_cast<Captain &>(player); // player must be a Captain
-        captain.stole_from->n_coins += captain_steals;
-    }
-    else
-    {
-        throw "Invalid Block\n";
+    
+    else{
+        throw "you poor";
     }
 }
+
+

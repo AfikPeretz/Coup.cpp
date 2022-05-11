@@ -6,137 +6,144 @@
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+string coup::Game::turn(){
+    string s = this->listOfPlayer.at(this->cur_p)->name;
+    return s;
+}
 
-void coup::Game::rbpfl()
-{
-    coup::Player *player = this->listOfPlayer.at(this->current_player);
 
-    for (auto &pair : this->blockmap)
-    {
-        std::vector<coup::Player *> &players_by_role = this->blockmap.at(pair.first);
-        long i = 0;
-        for (coup::Player *p_player : players_by_role)
-        {
-            if (p_player->name == player->name)
-            {
-                players_by_role.erase(players_by_role.begin() + i);
-            }
-            i++;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Game::addParticipants(coup::Player &p){
+    bool a = false;
+    size_t x = 0;
+    if (this->isthegamestart == a && this->listOfPlayer.size() < maximumParticipants){
+        this->listOfPlayer.push_back(&p);
+        x++;
+    }
+    else{
+        x++;
+        throw runtime_error("Participants list is full");
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+vector<string> coup::Game::players(){
+    vector<string> n;
+    size_t x = 0;
+    for (coup::Player *p : this -> listOfPlayer){
+        if (p -> iStilNotDead()){
+            x++;
+            n.push_back(p -> name);
+            x--;
         }
+        x++;
     }
+    return n;
 }
 
-std::vector<std::string> coup::Game::players()
-{
-    std::vector<std::string> names;
-    for (coup::Player *player : this->listOfPlayer)
-    {
-        if (player->is_alive())
-        {
-            names.push_back(player->name);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool coup::Game::Blockable(coup::Player &pb, const string &mr){
+    vector<coup::Player *> &pp = this->blockmap.at(mr);
+    bool ans = true;
+    long l = 0;
+    for (const coup::Player *p : pp){
+        if (p -> name == pb.name){
+            pp.erase(pp.begin() + l);
+            return ans;
         }
+        l++;
     }
 
-    return names;
+    return !ans;
 }
 
-std::string coup::Game::turn()
-{
-    return this->listOfPlayer.at(this->current_player)->name;
-}
 
-void coup::Game::addParticipants(coup::Player &player)
-{
-    if (this->listOfPlayer.size() < maximumParticipants && !this->isthegamestart)
-    {
-        this->listOfPlayer.push_back(&player);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Game::endThisTurn(){
+    size_t size = this -> listOfPlayer.size();
+    if (size == 0 || size == 1){
+        throw "need more Participants";
     }
-    else
-    {
-        throw std::runtime_error("Cannot Add More Players!\n");
+    bool ans = true;
+    if (!this->isthegamestart){
+        this->isthegamestart = ans;
     }
-}
-
-void coup::Game::endThisTurn()
-{
-    if (this->listOfPlayer.size() <= 1)
-    {
-        throw "Too few players!\n";
+    else if (this -> bts){
+        this-> bts = !ans;
     }
-    if (!this->isthegamestart)
-    {
-        this->isthegamestart = true;
+    this -> cur_p = (this -> cur_p + 1) % size;
+    while (!this -> listOfPlayer.at(this->cur_p) -> isPlaying){
+        this -> cur_p = (this -> cur_p + 1) % size;
     }
-
-    // get next player that is in game
-    this->current_player = (this->current_player + 1) % this->listOfPlayer.size();
-
-    while (!this->listOfPlayer.at(this->current_player)->in_game)
-    {
-        this->current_player = (this->current_player + 1) % this->listOfPlayer.size();
-    }
-
     this->rbpfl();
-
-    coup::Player &c_player = *this->listOfPlayer.at(this->current_player);
-
-    if (c_player.role_name == "Assassin")
-    {
-        coup::Assassin &assassin = dynamic_cast<Assassin &>(c_player);
-        assassin.last_special_coup = nullptr;
-    }
-    else if (c_player.role_name == "Captain")
-    {
-        coup::Captain &captain = dynamic_cast<Captain &>(c_player);
-        captain.stole_from = nullptr;
-    }
-}
-
-void coup::Game::insertToBlockableList(coup::Player *player, const std::string &blocking_role)
-{
-    this->blockmap.at(blocking_role).push_back(player);
-}
-
-bool coup::Game::Blockable(coup::Player &player_to_block, const std::string &my_role)
-{
-    std::vector<coup::Player *> &potential_players = this->blockmap.at(my_role);
-    long i = 0;
-    for (const coup::Player *player : potential_players)
-    {
-        if (player->name == player_to_block.name)
-        {
-            potential_players.erase(potential_players.begin() + i);
-            return true;
+    coup::Player &cp = *this -> listOfPlayer.at(this->cur_p);
+    if (cp.roleName == "Assassin" || cp.roleName == "Captain"){
+        if (cp.roleName == "Assassin"){
+        coup::Assassin &assassin = dynamic_cast<Assassin &> (cp);
+        assassin.sc = nullptr;
         }
-        i++;
-    }
-
-    return false;
-}
-
-std::string coup::Game::winner()
-{
-    if (this->listOfPlayer.size() <= 1)
-    {
-        throw "Too few players!\n";
-    }
-
-    int counter = 0;
-    std::string winner_name;
-
-    for (coup::Player *player : this->listOfPlayer)
-    {
-        if (player->in_game)
+        else if (cp.roleName == "Captain")
         {
-            counter++;
-            winner_name = player->name;
+        coup::Captain &captain = dynamic_cast<Captain &> (cp);
+        captain.stf= nullptr;
         }
     }
-
-    if (counter != 1)
-    {
-        throw "There are more players in the game!\n";
-    }
-
-    return winner_name;
 }
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+string coup::Game::winner(){
+    size_t size = this->listOfPlayer.size();
+    size_t cnt = 0;
+    string wn;
+    if (size < 1 || size == 1){
+        throw "need more Participants";
+    }
+    for (coup::Player *p : this->listOfPlayer){
+        if (p -> isPlaying){
+            cnt++;
+            wn = p -> name;
+        }
+    }
+    size_t x = 0;
+    if (cnt != 1){
+        throw "too many Participants";
+    }
+    x++;
+    return wn;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Game::insertToBlockableList(coup::Player *p, const string &br){
+    size_t x = 0;
+    this -> blockmap.at(br).push_back(p);
+    x++;
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Game::rbpfl(){
+    coup::Player *p = this -> listOfPlayer.at(this -> cur_p);
+    for (auto &couple : this -> blockmap){
+        long x = 0;
+        vector<coup::Player *> &pbr = this -> blockmap.at(couple.first);
+        long l = 0;
+        for (coup::Player *pp : pbr){
+            if (pp -> name == p -> name){
+                x++;
+                pbr.erase(pbr.begin() + l);
+            }
+            l++;
+            x++;
+        }
+    }
+}
+
+

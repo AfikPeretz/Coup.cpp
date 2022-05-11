@@ -3,68 +3,85 @@
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool coup::Player::iStilNotDead() const {
+    bool ans = this -> isPlaying;
+    return ans;
+}
 
-void coup::Player::income()
-{
-    if (this->game.turn() == this->name)
-    {
-        this->n_coins += inc;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Player::dead(){
+    bool ans = false;
+    this -> isPlaying = ans;
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Player::coup(Player &p){
+    size_t x = 0;
+    if (this->coin >= couPrice && p.iStilNotDead()){
+        x++;
+        p.dead();
+        this->coin = this->coin - couPrice;
         this->game.endThisTurn();
     }
-    else
-    {
+    else{
+        x++;
+        throw "Player already dead or you poor";
+    }
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Player::aliveagain(){
+    bool ans = true;
+    this->isPlaying = ans;
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+std::string coup::Player::role() const {
+    return this->roleName; 
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Player::income(){
+    string s = this->name;
+    size_t x = 0;
+    if (this->game.turn() == s){
+        this->coin = this->coin + incomeBonus;
+        this->game.endThisTurn();
+    }
+    else{
+        throw "not your turn";
+    }
+    x++;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Player::foreign_aid(){
+    size_t nameis = 0;
+    if (this -> coin < maxCapacity && this -> game.turn() == this -> name){
+        this -> game.insertToBlockableList(this, "Duke");
+        this -> coin = this -> coin + foreignAidBonus;
+        nameis++;
+        this -> game.endThisTurn();
+    }
+    else{
+        nameis++;
         throw "This is not your turn or you have atleast 10 coins!\n";
     }
 }
 
-// get foreign aid
-void coup::Player::foreign_aid()
-{
-    if (this->game.turn() == this->name && this->n_coins < must_coup)
-    {
-        this->n_coins += aid;
-        this->game.insertToBlockableList(this, "Duke");
-        this->game.endThisTurn();
-    }
-    else
-    {
-        throw "This is not your turn or you have atleast 10 coins!\n";
-    }
-}
 
-// coup
-void coup::Player::coup(Player &player)
-{
-    if (player.is_alive() && this->n_coins >= coup_price)
-    {
-        this->n_coins -= coup_price;
-        player.die();
-        this->game.endThisTurn();
-    }
-    else
-    {
-        throw "Player is already dead or you dont have enough coins!\n";
-    }
-}
-
-
-// get number of coins
-int coup::Player::coins() const { return this->n_coins; }
-
-// get the role of the player
-std::string coup::Player::role() const { return this->role_name; }
-
-// check if the player is alive
-bool coup::Player::is_alive() const { return this->in_game; }
-
-// die
-void coup::Player::die()
-{
-    this->in_game = false;
-}
-
-// revive
-void coup::Player::revive()
-{
-    this->in_game = true;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int coup::Player::coins() const {
+    return this -> coin; 
 }

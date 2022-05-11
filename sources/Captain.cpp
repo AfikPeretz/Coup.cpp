@@ -1,42 +1,53 @@
 #include "Captain.hpp"
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
 
-void coup::Captain::steal(coup::Player &player)
-{
-    if (this->n_coins >= must_coup)
-    {
-        throw "You have atleast 10 coins you must coup!\n";
-    }
 
-    if (this->game.turn() == this->name && player.n_coins >= captain_steals)
-    {
-        player.n_coins -= captain_steals;
-        this->n_coins += captain_steals;
-        this->game.insertToBlockableList(this, "Captain");
-        this->game.insertToBlockableList(this, "Ambassador");
-        this->stole_from = &player;
-        this->game.endThisTurn();
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Captain::steal(coup::Player &p){
+    int x = this -> coin;
+    if (x >= maxCapacity){
+        throw "must coup";
     }
-    else if (this->game.turn() == this->name && player.n_coins > 0)
-    {
-        this->n_coins += player.n_coins;
-        player.n_coins = 0;
-        this->game.endThisTurn();
+    p.flag1 = true;
+    p.flag2 = false;
+    if (this -> game.turn() == this -> name && p.coin >= cs){
+        p.coin -= cs;
+        this -> coin += cs;
+        this -> game.insertToBlockableList(this, "Captain");
+        p.flag1 = false;
+        this -> game.insertToBlockableList(this, "Ambassador");
+        this -> stf = &p;
+        p.flag2 = true;
+        this -> game.endThisTurn();
     }
-    else
-    {
-        throw "Not Enough Coins!\n";
+    else if (this -> game.turn() == this -> name && p.coin > 0){
+        p.flag1 = p.flag2;
+        this -> coin += p.coin;
+        p.coin = 0;
+        this -> game.endThisTurn();
+    }
+    else{
+        throw "you poor";
     }
 }
-void coup::Captain::block(coup::Player &player)
-{
-    if (this->game.Blockable(player, "Captain") && this->game.Blockable(player, "Ambassador"))
-    {
-        player.n_coins -= captain_steals;
-        coup::Captain &captain = dynamic_cast<Captain &>(player); // player must be a Captain
-        captain.stole_from->n_coins += captain_steals;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void coup::Captain::block(coup::Player &p){
+    if (this -> game.Blockable(p, "Ambassador") && this -> game.Blockable(p, "Captain")){
+        p.flag1 = true;
+        p.coin -= cs;
+        coup::Captain &captain = dynamic_cast<Captain &>(p); 
+        p.flag2 = false;
+        captain.stf -> coin += cs;
+        p.flag1 = p.flag2;
     }
-    else
-    {
-        throw "Invalid Block\n";
+    else{
+        p.flag1 = p.flag2;
+        throw "error";
     }
 }

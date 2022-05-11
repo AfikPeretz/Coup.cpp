@@ -1,14 +1,24 @@
 #include "Player.hpp"
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
 
+class coup::Duke : public coup::Player{
+    friend class Captain;
+    friend class Contessa;
+    private: 
+        bool flag;
+        int size;
 
-class coup::Duke : public coup::Player
-{
-public:
-    Duke(coup::Game &game, std::string player_name) : Player(game, player_name, "Duke")
-    {
-        game.addParticipants(*this);
-    }
-    void tax();
-    void block(Player &player);
-    ~Duke() {}
+    public:
+        Duke(coup::Game &game, string pn) : Player(game, pn, "Duke"){
+            flag = true;
+            game.addParticipants(*this);
+            size = 0;
+        }
+        void block(Player &);
+        void tax();
+        
+        
 };

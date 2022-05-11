@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <string>
 using namespace std;
 #define maximumParticipants 6
 namespace coup{class Game; class Player; class Duke; class Assassin; class Ambassador; class Captain; class Contessa;} 
@@ -23,14 +24,15 @@ class coup::Game{
         vector<coup::Player *> listOfPlayer;
         vector<string> roList = {"Duke", "Assassin", "Ambassador", "Captain", "Contessa"};
         bool bts;
-        size_t current_player;                 
+        size_t cur_p;                 
         
 
 
     public:
 
-        Game() : current_player(0), isthegamestart(false){
+        Game() : cur_p(0), isthegamestart(false), wtf(false){
             for (string s : roList){
+                bts = true;
                 pair<string, vector<coup::Player *>> couple = {s, vector<coup::Player* >()};
                 blockmap.insert(couple);
             }
