@@ -31,9 +31,9 @@ public:
         flag1 = true;
         flag2 = false;
     }
-    virtual void coup(Player &); 
+    void coup(Player &); 
     void dead();                        
-    void aliveagain(); 
+    virtual void aliveagain(); 
     void income();
     string role() const;               
     bool iStilNotDead() const;                    
